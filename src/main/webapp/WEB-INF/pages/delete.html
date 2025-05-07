@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Delete User</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<style> body {
+    background-color: #FFC0CB;
+} </style>
+<h2 style="text-align: center;">Are you sure you want to delete the User?</h2>
+<h3 style="text-align: center;">
+    <strong>ID:</strong>
+    <span th:utext="${user.id}"></span>
+    <br>
+    <strong>NAME:</strong>
+    <span th:utext="${user.name}"></span>
+    <br>
+    <strong>EMAIL:</strong>
+    <span th:utext="${user.email}"></span>
+    <br>
+    <strong>AGE:</strong>
+    <span th:utext="${user.age}"></span>
+    <br>
+    <br>
+    <br>
+    <form method="post">
+        <input type="submit" value="Yes" style="background-color: red; color: white;"/>
+    </form>
+    <form th:action="@{/users}">
+        <input type="submit" value="No" style="background-color: green; color: white;"/>
+    </form>
+</h3>
+<p style="text-align: center;">
+    <a th:href="@{/users}">Go to User list</a>
+</p>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>User</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<style> body {
+  background-color: #FFE4B5;
+} </style>
+<h2 style="text-align: center;">User</h2>
+<form method="get">
+  <h4 style="text-align: center;">
+    User's id:
+    <span th:utext="${user.id}"></span>
+    <br>
+    User's name:
+    <span th:utext="${user.name}"></span>
+    <br>
+    User's email:
+    <span th:utext="${user.email}"></span>
+    <br>
+    User's age:
+    <span th:utext="${user.age}"></span>
+  </h4>
+</form>
+<h2 style="text-align: center;">Edit user</h2>
+<form method="post">
+  <h4 style="text-align: center;">
+    <style> input {
+      background-color: #9ACD32;
+    } </style>
+    <label for="name">Name</label>
+    <input name="name" type="text" id="name"/>
+    <br>
+    <label for="email">Email</label>
+    <input name="email" type="text" id="email"/>
+    <br>
+    <label for="age">Age</label>
+    <input name="age" type="number" id="age"/>
+    <br>
+    <input type="submit" value="Edit user"/>
+  </h4>
+  <p style="text-align: center;">
+    <a th:href="@{/users}">Go to User list</a>
+  </p>
+</form>
+</body>
+</html>

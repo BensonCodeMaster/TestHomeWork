@@ -1,0 +1,62 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Users</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<style> body {
+    background-color: #20B2AA;
+} </style>
+<h1 style="text-align: center;">Users</h1>
+<h2 style="text-align: center;">Add new user</h2>
+<form method="post">
+    <h3 style="text-align: center;">
+        <style> input {
+            background-color: #9ACD32;
+        } </style>
+        <label for="name">Name</label>
+        <input name="name" type="text" id="name"/>
+        <br>
+        <label for="email">Email</label>
+        <input name="email" type="text" id="email"/>
+        <br>
+        <label for="age">Age</label>
+        <input name="age" type="number" id="age"/>
+        <br>
+        <input type="submit" value="Add new user"/>
+    </h3>
+</form>
+<br/><br/>
+<div>
+    <table border="1" bgcolor=66CCAA>
+        <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>EMAIL</th>
+            <th>AGE</th>
+            <th>READ USER</th>
+            <th>UPDATE</th>
+            <th>DELETE</th>
+        </tr>
+        <tr th:each="user : ${userList}">
+            <td th:utext="${user.id}">ID</td>
+            <td th:utext="${user.name}">NAME</td>
+            <td th:utext="${user.email}">EMAIL</td>
+            <td th:utext="${user.age}">AGE
+            <td>
+                <a th:href="@{/users/{id}(id=${user.id})}">User Page</a>
+            </td>
+            <td>
+                <a th:href="@{/users/update/{id}(id=${user.id})}">Update</a>
+            </td>
+            <form th:action="@{users/delete/{id}(id=${user.id})}" th:method="get">
+                <td>
+                    <input type="submit" value="Delete"/>
+                </td>
+            </form>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
