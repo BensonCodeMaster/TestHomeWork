@@ -21,49 +21,50 @@ public class UsersController {
 
 
     @GetMapping
-    public String getUsers(Model model){
+    public String getUsers(Model model) {
         model.addAttribute("userList", userService.getAll());
         return "users";
     }
 
 
     @PostMapping
-    public  String addUser(@ModelAttribute("user")User user){
+    public String addUser(@ModelAttribute("user") User user) {
         userService.add(user);
-        return  "redirect:/users";
+        return "redirect:/users";
     }
 
-    @GetMapping("/user")  // URL теперь будет /user?id=123
-    public String getUser(@RequestParam("id") Long id, Model model) {
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable("id") Long id) {
+        userService.delete(id);
+        return "redirect:/users";  // Перенаправляем обратно на список пользователей
+    }
+
+    @GetMapping("/{id}")
+    public String getUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "user";
     }
 
-    @GetMapping("/update")
-    public String showUserUpdatePage(@RequestParam("id") Long id, Model model) {
+    @GetMapping("/update/{id}")
+    public String showUserUpdatePage(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "update";
     }
 
-    @PostMapping("/update")
-    public String updateUser(@RequestParam("id") Long id,
+    @PostMapping("/update/{id}")
+    public String updateUser(@PathVariable("id") Long id,
                              @RequestParam String name,
                              @RequestParam String email,
                              @RequestParam Integer age) {
         userService.update(id, name, email, age);
-        return "redirect:/users/" + id;
+        return "redirect:/users/update/" + id;
     }
 
-    @GetMapping("/delete")
-    public String showDeletePage(@RequestParam("id") Long id, Model model) {
+    @GetMapping("/delete/{id}")
+    public String showDeletePage(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.findById(id));
         return "delete";
-    }
 
-    @PostMapping("/delete")
-    public String deleteUser(@RequestParam Long id) {
-        userService.delete(id);
-        return "redirect:/users";
     }
 }
 
