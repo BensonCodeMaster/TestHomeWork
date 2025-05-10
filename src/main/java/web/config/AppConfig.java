@@ -35,6 +35,7 @@ public class AppConfig {
         entityManager.setPackagesToScan("web.model");
         entityManager.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         entityManager.setJpaProperties(getHibernateProperties());
+        entityManager.setPersistenceUnitName("EntityManager");
         return entityManager;
     }
 
