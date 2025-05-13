@@ -3,30 +3,116 @@
     <meta charset="UTF-8"/>
     <title>Users</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #20B2AA;
+            font-family: Arial, sans-serif;
+        }
+
+        input[type="text"], input[type="number"] {
+            background-color: #9ACD32;
+            padding: 5px;
+            border: 1px solid #666;
+            border-radius: 4px;
+        }
+
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-size: 12px;
+            display: none;
+        }
+
+        .error-input {
+            border: 2px solid #ff0000 !important;
+        }
+
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<style> body {
-    background-color: #20B2AA;
-} </style>
 <h1 style="text-align: center;">Users</h1>
+
+<div th:if="${errorMessage}" class="error-message" style="text-align: center; color: red; display: block;">
+    <span th:text="${errorMessage}"></span>
+</div>
+
 <h2 style="text-align: center;">Add new user</h2>
-<form method="post">
+<form method="post" id="userForm" onsubmit="return validateForm()">
     <h3 style="text-align: center;">
-        <style> input {
-            background-color: #9ACD32;
-        } </style>
         <label for="name">Name</label>
-        <input name="name" type="text" id="name"/>
+        <input name="name" type="text" id="name"
+               pattern="^[a-zA-Zа-яА-ЯёЁ\\s\\-]+$"
+               title="Name can only contain letters and hyphens"
+               required/>
+        <div class="error-message" id="name-error">Name can only contain letters and hyphens</div>
         <br>
+
         <label for="surname">Surname</label>
-        <input name="surname" type="text" id="surname"/>
+        <input name="surname" type="text" id="surname"
+               pattern="^[a-zA-Zа-яА-ЯёЁ\\s\\-]+$"
+               title="Surname can only contain letters and hyphens"
+               required/>
+        <div class="error-message" id="surname-error">Surname can only contain letters and hyphens</div>
         <br>
+
         <label for="age">Age</label>
-        <input name="age" type="number" id="age"/>
+        <input name="age" type="number" id="age" min="1" max="120"
+               title="Age must be between 1 and 120"
+               required/>
+        <div class="error-message" id="age-error">Age must be between 1 and 120</div>
         <br>
+
         <input type="submit" value="Add new user"/>
     </h3>
 </form>
+
 <br/><br/>
 <div>
     <table border="1" bgcolor=66CCAA>
@@ -58,5 +144,71 @@
         </tr>
     </table>
 </div>
+
+<script>
+    // Валидация при вводе
+    $(document).ready(function() {
+        $('#name').on('input', function() {
+            validateName();
+        });
+
+        $('#surname').on('input', function() {
+            validateSurname();
+        });
+
+        $('#age').on('input', function() {
+            validateAge();
+        });
+    });
+
+    function validateName() {
+        const name = $('#name').val();
+        const regex = /^[a-zA-Zа-яА-ЯёЁ\s\-]+$/;
+        if (!regex.test(name)) {
+            $('#name').addClass('error-input');
+            $('#name-error').show();
+            return false;
+        } else {
+            $('#name').removeClass('error-input');
+            $('#name-error').hide();
+            return true;
+        }
+    }
+
+    function validateSurname() {
+        const surname = $('#surname').val();
+        const regex = /^[a-zA-Zа-яА-ЯёЁ\s\-]+$/;
+        if (!regex.test(surname)) {
+            $('#surname').addClass('error-input');
+            $('#surname-error').show();
+            return false;
+        } else {
+            $('#surname').removeClass('error-input');
+            $('#surname-error').hide();
+            return true;
+        }
+    }
+
+    function validateAge() {
+        const age = $('#age').val();
+        if (age < 1 || age > 120) {
+            $('#age').addClass('error-input');
+            $('#age-error').show();
+            return false;
+        } else {
+            $('#age').removeClass('error-input');
+            $('#age-error').hide();
+            return true;
+        }
+    }
+
+    function validateForm() {
+        const isNameValid = validateName();
+        const isSurnameValid = validateSurname();
+        const isAgeValid = validateAge();
+
+        return isNameValid && isSurnameValid && isAgeValid;
+    }
+</script>
 </body>
 </html>
