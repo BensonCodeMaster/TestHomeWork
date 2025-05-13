@@ -12,7 +12,7 @@ public interface UserService {
 
     void delete(Long id);
 
-    public void update(Long id, String name, String surname, Integer age);
+    void update(Long id, String name, String surname, Integer age);
 
     User findById(Long id);
 }

@@ -14,7 +14,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-
     @Override
     @Transactional(readOnly = true)
     public List<User> getAll() {

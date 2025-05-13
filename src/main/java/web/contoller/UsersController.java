@@ -54,10 +54,10 @@ public class UsersController {
     @PostMapping("/update/{id}")
     public String updateUser(@PathVariable("id") Long id,
                              @RequestParam String name,
-                             @RequestParam String email,
+                             @RequestParam String surname,
                              @RequestParam Integer age) {
-        userService.update(id, name, email, age);
-        return "redirect:/users/update/" + id;
+        userService.update(id, name, surname, age);
+        return "redirect:/users";
     }
 
     @GetMapping("/delete/{id}")

@@ -23,19 +23,17 @@ public class UserDaoImpl implements UserDao{
 
 
     @Override
-    @Transactional
+
     public List<User> getAll() {
         return entityManager.createQuery("from User", User.class).getResultList();
     }
 
     @Override
-    @Transactional
     public void add(User user) {
         entityManager.persist(user);
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
       User user = findById(id);
       if (user != null){
@@ -45,13 +43,11 @@ public class UserDaoImpl implements UserDao{
     }
 
     @Override
-    @Transactional
     public void update(User user) {
         entityManager.merge(user);
     }
 
     @Override
-    @Transactional
     public User findById(Long id) {
         return entityManager.find(User.class,id);
     }
