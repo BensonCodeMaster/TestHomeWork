@@ -1,0 +1,211 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>User</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    body {
+      background-color: #FFE4B5;
+      font-family: Arial, sans-serif;
+    }
+
+    input[type="text"], input[type="number"] {
+      background-color: #9ACD32;
+      padding: 5px;
+      border: 1px solid #666;
+      border-radius: 4px;
+      margin: 5px 0;
+    }
+
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+
+    .error-message {
+      color: #ff0000;
+      font-size: 12px;
+      display: none;
+    }
+
+    .error-input {
+      border: 2px solid #ff0000 !important;
+    }
+
+    a {
+      color: #0066cc;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .user-info {
+      background-color: #f8f8f8;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 10px auto;
+      width: 50%;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .edit-form {
+      background-color: #f8f8f8;
+      padding: 15px;
+      border-radius: 5px;
+      margin: 20px auto;
+      width: 50%;
+      text-align: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+<h2 style="text-align: center;">User</h2>
+
+<div th:if="${errorMessage}" class="error-message" style="text-align: center; color: red; display: block;">
+  <span th:text="${errorMessage}"></span>
+</div>
+
+<div class="user-info">
+  <form method="get">
+    <h4>
+      User's id: <span th:utext="${user.id}"></span><br>
+      User's name: <span th:utext="${user.name}"></span><br>
+      User's surname: <span th:utext="${user.surname}"></span><br>
+      User's age: <span th:utext="${user.age}"></span>
+    </h4>
+  </form>
+</div>
+
+<h2 style="text-align: center;">Edit user</h2>
+<div class="edit-form">
+  <form method="post" id="editForm" onsubmit="return validateForm()">
+    <div>
+      <label for="name">Name</label>
+      <input name="name" type="text" id="name"
+             th:value="${user.name}"
+             pattern="^[a-zA-Zа-яА-ЯёЁ\\s\\-]+$"
+             title="Name can only contain letters and hyphens"
+             required/>
+      <div class="error-message" id="name-error">Name can only contain letters and hyphens</div>
+    </div>
+
+    <div>
+      <label for="surname">Surname</label>
+      <input name="surname" type="text" id="surname"
+             th:value="${user.surname}"
+             pattern="^[a-zA-Zа-яА-ЯёЁ\\s\\-]+$"
+             title="Surname can only contain letters and hyphens"
+             required/>
+      <div class="error-message" id="surname-error">Surname can only contain letters and hyphens</div>
+    </div>
+
+    <div>
+      <label for="age">Age</label>
+      <input name="age" type="number" id="age"
+             th:value="${user.age}"
+             min="1" max="120"
+             title="Age must be between 1 and 120"
+             required/>
+      <div class="error-message" id="age-error">Age must be between 1 and 120</div>
+    </div>
+
+    <div>
+      <input type="submit" value="Edit user"/>
+    </div>
+  </form>
+</div>
+
+<p style="text-align: center;">
+  <a th:href="@{/users}">Go to User list</a>
+</p>
+
+<script>
+  // Валидация при вводе
+  $(document).ready(function() {
+    $('#name').on('input', function() {
+      validateName();
+    });
+
+    $('#surname').on('input', function() {
+      validateSurname();
+    });
+
+    $('#age').on('input', function() {
+      validateAge();
+    });
+
+    // Инициализация значений из модели
+    const name = $('#name').val();
+    const surname = $('#surname').val();
+    const age = $('#age').val();
+
+    if (name) validateName();
+    if (surname) validateSurname();
+    if (age) validateAge();
+  });
+
+  function validateName() {
+    const name = $('#name').val();
+    const regex = /^[a-zA-Zа-яА-ЯёЁ\s\-]+$/;
+    if (!regex.test(name)) {
+      $('#name').addClass('error-input');
+      $('#name-error').show();
+      return false;
+    } else {
+      $('#name').removeClass('error-input');
+      $('#name-error').hide();
+      return true;
+    }
+  }
+
+  function validateSurname() {
+    const surname = $('#surname').val();
+    const regex = /^[a-zA-Zа-яА-ЯёЁ\s\-]+$/;
+    if (!regex.test(surname)) {
+      $('#surname').addClass('error-input');
+      $('#surname-error').show();
+      return false;
+    } else {
+      $('#surname').removeClass('error-input');
+      $('#surname-error').hide();
+      return true;
+    }
+  }
+
+  function validateAge() {
+    const age = $('#age').val();
+    if (age < 1 || age > 120) {
+      $('#age').addClass('error-input');
+      $('#age-error').show();
+      return false;
+    } else {
+      $('#age').removeClass('error-input');
+      $('#age-error').hide();
+      return true;
+    }
+  }
+
+  function validateForm() {
+    const isNameValid = validateName();
+    const isSurnameValid = validateSurname();
+    const isAgeValid = validateAge();
+
+    return isNameValid && isSurnameValid && isAgeValid;
+  }
+</script>
+</body>
+</html>
