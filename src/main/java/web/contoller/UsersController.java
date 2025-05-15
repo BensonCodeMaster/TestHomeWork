@@ -5,49 +5,49 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import web.model.User;
-import web.service.UserService;
+import web.service.UserServiceImpl;
 
 @Controller
 @RequestMapping(value = "/users")
 public class UsersController {
 
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceimpl;
 
     @Autowired
-    public UsersController(UserService userService) {
-        this.userService = userService;
+    public UsersController(UserServiceImpl userService) {
+        this.userServiceimpl = userService;
     }
 
 
     @GetMapping
     public String getUsers(Model model) {
-        model.addAttribute("userList", userService.getAll());
+        model.addAttribute("userList", userServiceimpl.getAll());
         return "users";
     }
 
 
     @PostMapping
     public String addUser(@ModelAttribute("user") User user) {
-        userService.add(user);
+        userServiceimpl.add(user);
         return "redirect:/users";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
-        userService.delete(id);
+        userServiceimpl.delete(id);
         return "redirect:/users";  // Перенаправляем обратно на список пользователей
     }
 
     @GetMapping("/{id}")
     public String getUser(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.findById(id));
+        model.addAttribute("user", userServiceimpl.findById(id));
         return "user";
     }
 
     @GetMapping("/update/{id}")
     public String showUserUpdatePage(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.findById(id));
+        model.addAttribute("user", userServiceimpl.findById(id));
         return "update";
     }
 
@@ -56,13 +56,13 @@ public class UsersController {
                              @RequestParam("name") String name,
                              @RequestParam("surname") String surname,
                              @RequestParam("age") Integer age) {
-        userService.update(id, name, surname, age);
+        userServiceimpl.update(id, name, surname, age);
         return "redirect:/users";
     }
 
     @GetMapping("/delete/{id}")
     public String showDeletePage(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.findById(id));
+        model.addAttribute("user", userServiceimpl.findById(id));
         return "delete";
 
     }
