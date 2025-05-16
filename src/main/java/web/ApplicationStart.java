@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 
 @SpringBootApplication
-@RestController
 public class ApplicationStart {
 
     public static void main(String[] args) {

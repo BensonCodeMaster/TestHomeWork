@@ -1,0 +1,21 @@
+package web.service;
+
+import web.model.User;
+import web.repository.UserRepository;
+
+import java.util.List;
+
+public interface UserService {
+
+
+    List<User> getAll();
+
+    void add(User user);
+
+    void delete(Long id);
+
+    User findById(Long id);
+
+    void update(Long id, String name, String surname, Integer age);
+
+}
